@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>黑客背景</title>
+  <style>
+    body{
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-hacker"></canvas>
+  <script>
+    let timer = null
+    function play(){
+      // 获取canvas元素
+      const cvs = document.querySelector('#bg-hacker')
+      // 设置窗口尺寸
+      const width = window.innerWidth
+      const height = window.innerHeight
+      // 设置canvas的大小
+      cvs.width = width
+      cvs.height = height
+      
+      // 获取canvas绘制上下文
+      const ctx = cvs.getContext('2d')
+
+      // 列宽
+      const columnWidth = 20
+      // 列数
+      const columnCount = Math.floor(width / columnWidth);
+
+      // 记录每列写到了第几个文字
+      const columnNextIndexes = new Array(columnCount).fill(1)
+
+      // 绘画的函数
+      function draw(){
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'
+        ctx.fillRect(0, 0, width, height)
+        const fz = 20
+        ctx.font = `${fz}px "Roboto Mono"`
+        for(let i = 0; i<columnCount; i++){
+          ctx.fillStyle = getRandomColor()
+          const text = getRandomChar()
+          const x = columnWidth * i
+          const y = fz * columnNextIndexes[i]
+          if(y > height && Math.random() > 0.97){
+            columnNextIndexes[i] = 0
+          }else{
+            columnNextIndexes[i]++
+          }
+          ctx.fillText(text, x, y)
+        }
+      }
+      clearInterval(timer)
+      timer = setInterval(()=>{
+        draw()
+      },16)
+    
+
+      // 随机颜色
+      function getRandomColor(){
+        const fontColors = [
+          '#33B5E5',
+          '#0099CC',
+          '#AA66CC',
+          '#9933CC',
+          '#99CC00',
+          '#669900',
+          '#FFBB33',
+          '#FF8800',
+          '#FF4444',
+          '#CC0000'
+        ]
+        return fontColors[Math.floor(Math.random() * fontColors.length)]
+      }
+
+      // 随机的文字
+      function getRandomChar(){
+        const str = 'console.log("hellow world")'
+        return str[Math.floor(Math.random() * str.length)]
+      }
+    }
+    
+    window.addEventListener('resize', ()=>{
+      play()
+    })
+    play()
+  </script>
+</body>
+</html>
