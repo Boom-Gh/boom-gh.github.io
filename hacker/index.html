@@ -16,13 +16,49 @@
 <body>
   <canvas id="bg-hacker"></canvas>
   <script>
-    let timer = null
+    window.addEventListener('keydown',(e)=>{
+      console.log('keydown')
+      if(e && e.keyCode === 27){
+        exitFullScreen()
+        console.log('exitFullScreen')
+      }
+      if(e && e.keyCode === 122){
+        e.preventDefault()
+        e.returnValue = false
+        fullScreen()
+      }
+    })
+
+    let rafId = null
+    // 获取canvas元素
+    const cvs = document.querySelector('#bg-hacker')
+    cvs.addEventListener('dblclick',  ()=>{
+      console.log('webkitRequestFullscreen')
+      const isFull = document.fullscreenElement
+      if(isFull){
+        exitFullScreen()
+      }else{
+        fullScreen()
+      }
+    })
+
+    function fullScreen(){
+      const doc = document.documentElement
+      if(doc.requestFullscreen){
+        doc.requestFullscreen()
+      }
+    }
+
+    function exitFullScreen(){
+      if(document.exitFullscreen){
+        document.exitFullscreen()
+      }
+    }
+
     function play(){
-      // 获取canvas元素
-      const cvs = document.querySelector('#bg-hacker')
       // 设置窗口尺寸
-      const width = window.innerWidth
-      const height = window.innerHeight
+      const width = document.documentElement.clientWidth
+      const height = document.documentElement.clientHeight
       // 设置canvas的大小
       cvs.width = width
       cvs.height = height
@@ -56,12 +92,10 @@
           }
           ctx.fillText(text, x, y)
         }
+        rafId && cancelAnimationFrame(rafId)
+        rafId = requestAnimationFrame(draw)
       }
-      clearInterval(timer)
-      timer = setInterval(()=>{
-        draw()
-      },16)
-    
+      draw()
 
       // 随机颜色
       function getRandomColor(){
