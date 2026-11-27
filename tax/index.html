@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="https://boom-gh.github.io/tax/vite.svg" />
     <link rel="manifest" href="https://boom-gh.github.io/tax/manifest.json" />
+    <link rel="apple-touch-icon" href="https://boom-gh.github.io/tax/icon-192.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#4a90e2" />
     <!-- iOS 上以独立模式（隐藏状态栏）运行 -->
@@ -15,11 +16,13 @@
     <link rel="stylesheet" crossorigin href="https://boom-gh.github.io/tax/assets/index-CmsXDrgZ.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/sw.js");
+          // 以页面地址为基准解析 sw.js，兼容本地 / 与线上 /tax/ 子路径
+          const swUrl = new URL("sw.js", document.baseURI);
+          navigator.serviceWorker.register(swUrl).catch(() => {});
         });
       }
     </script>
