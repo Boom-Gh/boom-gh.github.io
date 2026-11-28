@@ -4,7 +4,7 @@
   "description": "收入纳税明细查询与记录",
   "start_url": "./",
   "scope": "./",
-  "display": "fullscreen",
+  "display": "standalone",
   "orientation": "portrait",
   "background_color": "#3d00a6",
   "theme_color": "#c0201e",
